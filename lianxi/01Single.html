@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      class Storage{
+        static getInstance(){
+          if(!Storage.instance){
+            Storage.instance=new Storage();
+          }
+          return Storage.instance;
+        }
+        getItem(key){
+          return localStorage.getItem(key);
+        }
+        setItem(key,value){
+          return localStorage.setItem(key,value);
+        }
+      }
+      const storage1 = Storage.getInstance();
+      const storage2 = Storage.getInstance();
+      storage1.setItem('name', '李磊');
+      console.log(storage1.getItem('name'));
+      console.log(storage2.getItem('name'));
+
+
+      function StorageBase(){}
+      StorageBase.prototype.getItem=function(key){
+        return localStorage.getItem(key);
+      }
+      StorageBase.prototype.setItem=function(key,value){
+        return localStorage.setItem(key,value);
+      }
+      const StorageB=(function(){
+        let instance=null;
+        return function(){
+          if(!instance){
+            instance=new StorageBase();
+          }
+          return instance;
+        }
+      })();
+
+      // const storage1B=new StorageB();
+      // const storage2B=new StorageB();
+      const storage1B=StorageB();
+      const storage2B=StorageB();
+      storage1B.setItem('name','李雷');
+      console.log(storage1B.getItem('name'));
+      console.log(storage2B.getItem('name'));
+      console.log(storage1B === storage2B);
+
+    </script>
+  </body>
+</html>
